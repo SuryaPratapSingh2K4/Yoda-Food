@@ -12,7 +12,7 @@ export async function generateUploadURL(req, res) {
         const command = new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
         Key: filename,
-        ContentType: filetype || "image/jpeg",
+        ContentType: filetype || "image/jpeg" || "image/png" || "image/jpg",
         });
         const uploadURL = await getSignedUrl(s3, command, { expiresIn: 3600 });
         const publicURL = `https://${process.env.BUCKET_NAME}.s3.${process.env.BUCKET_REGION}.amazonaws.com/${filename}`;

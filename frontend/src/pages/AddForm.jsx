@@ -1,17 +1,37 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import API from '../api';
+import { useNavigate } from 'react-router-dom';
 
 function AddForm() {
     const token = useSelector((state) => state.auth.token);
-    const [form, setForm] = useState({ title: "", description: "", category: "", Price: "", stocks: "" });
+    const [form, setForm] = useState({ title: "", description: "", category: "", price: "", stocks: "" });
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState(null);
-    const handleApply = async () => {
+    const formdata = new FormData();
+    const navigate = useNavigate();
+    formdata.append("title", form.title);
+    formdata.append("description", form.description);
+    formdata.append("category", form.category);
+    formdata.append("price", form.price);
+    formdata.append("stocks", form.stocks);
+    formdata.append("image", file);
+    const handleApply = async (e) => {
+        e.preventDefault();
         try {
-            const res = await API.post("/products/post")
+            setLoading(true)
+            const res = await API.post("/products/post", formdata, {
+                headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+            })
+            console.log(res);
+            setForm({ title: "", description: "", category: "", price: "", stocks: "" })
+            setFile(null)
+            navigate('/dashboard');
         } catch (error) {
-            
+            console.error(error.message);
+            alert("Failed to add product");
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -28,15 +48,13 @@ function AddForm() {
 
                     <label className='font-bold mb-2 text-black flex flex-col gap-2'>Product Category : <input type="text" placeholder='Product Category' value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className='input bg-slate-50 text-black shadow-sm shadow-black rounded-lg py-2 px-4 w-full' /></label>
 
-                    <label className='font-bold mb-2 text-black flex flex-col gap-2'>Product Price : <input type="text" placeholder='Product Price' value={form.Price} onChange={(e) => setForm({ ...form, Price: e.target.value })} className='input bg-slate-50 text-black shadow-sm shadow-black rounded-lg py-2 px-4 w-full' /></label>
+                    <label className='font-bold mb-2 text-black flex flex-col gap-2'>Product Price : <input type="text" placeholder='Product Price' value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className='input bg-slate-50 text-black shadow-sm shadow-black rounded-lg py-2 px-4 w-full' /></label>
 
                     <label className='font-bold mb-2 text-black flex flex-col gap-2'>Product Stocks : <input type="text" placeholder='Product Stocks' value={form.stocks} onChange={(e) => setForm({ ...form, stocks: e.target.value })} className='input bg-slate-50 text-black shadow-sm shadow-black rounded-lg py-2 px-4 w-full' /></label>
 
                     <label className='font-bold mb-4 mt-2'>Image : <input type="file" name='image' accept='.jpeg, .jpg, .png' onChange={(e) => setFile(e.target.files[0])} /></label>
 
-                    <button className='w-full bg-green-600 py-2 rounded-lg shadow-black shadow-md text-white font-semibold hover:bg-green-700'>Submit</button>
-
-
+                    <button className='w-full bg-green-600 py-2 rounded-lg shadow-black shadow-md text-white font-semibold hover:bg-green-700'>{loading ? "Uploading" : "Submit"}</button>
                 </form>
             </div>
         </div>
