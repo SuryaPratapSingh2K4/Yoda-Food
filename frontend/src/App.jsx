@@ -7,6 +7,7 @@ import SignUp from './pages/signUp.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './features/authSlice.js';
 import Modal from './pages/Modal.jsx';
+import { ShoppingCartIcon } from 'lucide-react';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -14,11 +15,12 @@ function App() {
     <Router>
       <nav className='bg-gray-200 fixed top-0 left-0 right-0  px-6 py-3 flex gap-4 items-center justify-between'>
         <h2>Yoda-Foood</h2>
-        {token ? <>
-          <NavLink to='/dashboard'>Products</NavLink>
-          <NavLink to='/add'>Add Products</NavLink>
-          <NavLink onClick={() => dispatch(logout())}>Logout</NavLink>
-        </> : <>
+        {token ? <div className='flex gap-4 items-center'>
+          <NavLink to='/dashboard' className='hover:scale-105 hover:font-bold'>Products</NavLink>
+          <NavLink to='/add' className='hover:scale-105 hover:font-bold'>Add Products</NavLink>
+          <NavLink to='/cart' className='hover:scale-105 hover:font-bold'><ShoppingCartIcon /></NavLink>
+          <NavLink onClick={() => dispatch(logout())} className='hover:scale-105 hover:font-bold'>Logout</NavLink>
+        </div> : <>
           <NavLink to='/'>Login</NavLink>
           <NavLink to='/signup'>SignUp</NavLink>
         </>}
@@ -30,7 +32,7 @@ function App() {
 
           <Route path='/dashboard' element={token ? <DashBoard /> : <Navigate to='/' />} />
           <Route path='/add' element={token ? <AddForm /> : <Navigate to='/' />} />
-          <Route path='/modal/:id' element={token ? <Modal/> : <Navigate to='/' />} />
+          <Route path='/modal/:id' element={token ? <Modal /> : <Navigate to='/' />} />
         </Routes>
       </div>
     </Router>

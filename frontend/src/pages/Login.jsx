@@ -12,7 +12,7 @@ function Login() {
         e.preventDefault();
         try {
             const res = await API.post("/auth/login", form);
-            dispatch(loginSuccess({ token: res.data.token, user: res.data.user }));
+            dispatch(loginSuccess({ token: res.data.token, user: res.data.exists }));
             navigate('/dashboard');
         } catch (error) {
             console.error(error.message);
