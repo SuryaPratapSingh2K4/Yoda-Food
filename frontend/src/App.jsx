@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './features/authSlice.js';
 import Modal from './pages/Modal.jsx';
 import { ShoppingCartIcon } from 'lucide-react';
+import Cart from './pages/Cart.jsx';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
           <Route path='/dashboard' element={token ? <DashBoard /> : <Navigate to='/' />} />
           <Route path='/add' element={token ? <AddForm /> : <Navigate to='/' />} />
           <Route path='/modal/:id' element={token ? <Modal /> : <Navigate to='/' />} />
+          <Route path='/cart' element={token ? <Cart/> : <Navigate to='/' />} />
         </Routes>
       </div>
     </Router>

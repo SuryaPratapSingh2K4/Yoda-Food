@@ -1,17 +1,19 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from '../api';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setProductsBId } from '../features/productSlice';
 import { ArrowBigLeftDashIcon, ArrowRight } from 'lucide-react'
+import { addToCart } from '../features/cartSlice';
 
 function Modal() {
     const { id } = useParams();
     const [state, setState] = useState({});
     const [image, setImage] = useState("");
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -29,6 +31,10 @@ function Modal() {
     const handleBack = () => {
         window.history.back();
     }
+    const handleCart = () => {
+        dispatch(addToCart(state));
+        navigate('/cart');
+    }
     return (
         <div className='p-8 mt-6 flex flex-row gap-4 ' key={id}>
             <ArrowBigLeftDashIcon size={60} onClick={handleBack} className='cursor-pointer mt-1' />
@@ -40,9 +46,10 @@ function Modal() {
                 <p className='font-semibold mr-8'>Description : <span className='font-normal'>{state.description}</span></p>
                 <p className='font-semibold'>Price : <span className='font-normal'>₹{state.price}</span></p>
                 <p className='font-semibold'>Category : <span className='font-normal'>{state.category}</span></p>
+                <p className='font-semibold'>Stocks : <span className='font-normal'>{state.stocks}</span></p>
                 <div className='flex flex-row gap-4 mt-4'>
                     <button className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 hover:scale-105 transition duration-300'>Order Now <ArrowRight /></button>
-                    <button className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-700 hover:text-white hover:scale-105 transition duration-300'>Add To Cart <ArrowRight /></button>
+                    <button onClick={handleCart} className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-700 hover:text-white hover:scale-105 transition duration-300'>Add To Cart <ArrowRight /></button>
                 </div>
             </div>
         </div>
