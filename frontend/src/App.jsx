@@ -14,7 +14,7 @@ function App() {
   const dispatch = useDispatch();
   return (
     <Router>
-      <nav className='bg-gray-200 fixed top-0 left-0 right-0  px-6 py-3 flex gap-4 items-center justify-between'>
+      <nav className='bg-gray-200 absolute top-0 left-0 right-0  px-6 py-3 flex gap-4 items-center justify-between'>
         <h2>Yoda-Foood</h2>
         {token ? <div className='flex gap-4 items-center'>
           <NavLink to='/dashboard' className='hover:scale-105 hover:font-bold'>Products</NavLink>
