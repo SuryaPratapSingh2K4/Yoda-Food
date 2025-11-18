@@ -8,21 +8,33 @@ const productSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
+        // Sort products by createdAt (newest first)
         setProducts: (state, action) => {
-        state.items = action.payload;
+            state.items = [...action.payload].sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
         },
+
+        // Insert new product at the top & ensure createdAt exists
         addProducts: (state, action) => {
-        state.items = state.items.push(action.payload);
+            const product = {
+                ...action.payload,
+                createdAt: action.payload.createdAt || new Date().toISOString(),
+            };
+
+            state.items.unshift(product);
         },
-        setProductsBId: (state,action) => {
-            const product = state.items.find((i) => i._id === action.payload._id);
-            if(product){
-                product.title = action.payload.title;
-                product.description = action.payload.description;
-                product.price = action.payload.price;
-                product.category = action.payload.category;
-                product.imageUrl = action.payload.imageUrl;
-                product.stocks = action.payload.stocks;
+
+        // Update an existing product
+        setProductsBId: (state, action) => {
+            const index = state.items.findIndex(
+                (p) => p._id === action.payload._id
+            );
+            if (index !== -1) {
+                state.items[index] = {
+                    ...state.items[index],
+                    ...action.payload,
+                };
             }
         }
     },
