@@ -54,7 +54,7 @@ function Cart() {
                                 <button onClick={() => setSearch("")} className='text-lg px-4 py-1.5 border border-gray-700 rounded-lg mt-2 bg-green-600 hover:bg-green-700 text-white hover:scale-105 font-normal flex items-center gap-2'>Clear Search <ArrowRight /></button></h1>
                         </div>
                     ) : (
-                        filtered.map((item) => (
+                        filtered.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt)).map((item) => (
                             <div key={item._id} className='flex flex-row gap-4 border border-gray-400 rounded-lg  items-center shadow-lg shadow-gray-300 hover:scale-105 transition duration-300 cursor-pointer'>
                                 <img src={image[item._id]} alt="" />
                                 <div className='pr-8'>
