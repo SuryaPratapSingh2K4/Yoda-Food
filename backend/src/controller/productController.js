@@ -47,7 +47,7 @@ export async function postProducts(req, res) {
         imageUrl,
         stocks,
         });
-        res.status(201).json( {newProduct} );
+        res.status(201).json( newProduct );
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

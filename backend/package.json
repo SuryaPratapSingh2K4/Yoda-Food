@@ -23,6 +23,7 @@
     "mongoose": "^8.19.3",
     "multer": "^2.0.2",
     "nodemon": "^3.1.11",
+    "razorpay": "^2.9.6",
     "s3client": "^0.1.1"
   }
 }
