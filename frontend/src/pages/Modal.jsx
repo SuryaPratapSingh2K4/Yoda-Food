@@ -35,6 +35,9 @@ function Modal() {
         dispatch(addToCart(state));
         navigate('/cart');
     }
+    const handleOrder = (id) => {
+        navigate(`/delivery/${id}`);
+    }
     return (
         <div className='p-8 mt-6 flex flex-row gap-4 ' key={id}>
             <ArrowBigLeftDashIcon size={60} onClick={handleBack} className='cursor-pointer mt-1' />
@@ -48,7 +51,7 @@ function Modal() {
                 <p className='font-semibold'>Category : <span className='font-normal'>{state.category}</span></p>
                 <p className='font-semibold'>Stocks : <span className='font-normal'>{state.stocks}</span></p>
                 <div className='flex flex-row gap-4 mt-4'>
-                    <button className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 hover:scale-105 transition duration-300'>Order Now <ArrowRight /></button>
+                    <button onClick={() => handleOrder(state._id)} className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 hover:scale-105 transition duration-300'>Order Now <ArrowRight /></button>
                     <button onClick={handleCart} className='flex items-center gap-2 border border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-700 hover:text-white hover:scale-105 transition duration-300'>Add To Cart <ArrowRight /></button>
                 </div>
             </div>

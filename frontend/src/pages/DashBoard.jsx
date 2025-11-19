@@ -60,7 +60,7 @@ function DashBoard() {
 
                 <input
                     type="search"
-                    className="border w-full max-w-xs h-10 rounded-lg p-3"
+                    className="border w-full max-w-xs h-10 rounded-lg p-3 bg-gray-100 text-black border-black"
                     placeholder="Search Product"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

@@ -7,8 +7,9 @@ import SignUp from './pages/signUp.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './features/authSlice.js';
 import Modal from './pages/Modal.jsx';
-import { ShoppingCartIcon } from 'lucide-react';
+import { ListOrderedIcon, ShoppingCartIcon } from 'lucide-react';
 import Cart from './pages/Cart.jsx';
+import Delivery from './pages/DeliveryItem.jsx';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -20,7 +21,9 @@ function App() {
           <NavLink to='/dashboard' className='hover:scale-105 hover:font-bold'>Products</NavLink>
           <NavLink to='/add' className='hover:scale-105 hover:font-bold'>Add Products</NavLink>
           <NavLink to='/cart' className='hover:scale-105 hover:font-bold'><ShoppingCartIcon /></NavLink>
+          <NavLink to='/mydelivery' className='hover:scale-105 hover:font-bold'><ListOrderedIcon /></NavLink>
           <NavLink onClick={() => dispatch(logout())} className='hover:scale-105 hover:font-bold'>Logout</NavLink>
+
         </div> : <>
           <NavLink to='/'>Login</NavLink>
           <NavLink to='/signup'>SignUp</NavLink>
@@ -34,7 +37,8 @@ function App() {
           <Route path='/dashboard' element={token ? <DashBoard /> : <Navigate to='/' />} />
           <Route path='/add' element={token ? <AddForm /> : <Navigate to='/' />} />
           <Route path='/modal/:id' element={token ? <Modal /> : <Navigate to='/' />} />
-          <Route path='/cart' element={token ? <Cart/> : <Navigate to='/' />} />
+          <Route path='/cart' element={token ? <Cart /> : <Navigate to='/' />} />
+          <Route path='/delivery/:id' element={token ? <Delivery /> : <Navigate to='/' />} />
         </Routes>
       </div>
     </Router>
