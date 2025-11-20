@@ -7,6 +7,7 @@ import authRouter from "./routes/authRouter.js";
 import productRouter from "./routes/productRouter.js";
 import Razorpay from "razorpay";
 import paymentRouter from './routes/paymentRouter.js'
+import { getKey } from "./controller/paymentController.js";
 
 export const instance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/payment", paymentRouter)
+app.get("/api/getKey",getKey)
 
 // app.post("/api/payment/process",processPayment)
 
