@@ -2,6 +2,9 @@
     dotenv.config();
     import Order from "../model/orderSchema.js";
     import { instance } from "../server.js";
+    import crypto from "crypto";
+    import dotenv from "dotenv";
+    dotenv.config();
 
     export async function processPayment(req, res) {
     try {
@@ -11,7 +14,7 @@
         user,
         userEmail,
         total,
-        payment: {}
+        payment: {},
         //   status: "pending",
         });
         const options = {
@@ -21,17 +24,17 @@
         const order = await instance.orders.create(options);
 
         newOrder.payment = {
-            razorpayOrderId: order.id,
-            amount: order.amount,
-            currency: order.currency
-        }
+        razorpayOrderId: order.id,
+        amount: order.amount,
+        currency: order.currency,
+        };
 
         await newOrder.save();
 
         res.status(200).json({
         success: true,
         order,
-        dbOrderId: newOrder._id
+        dbOrderId: newOrder._id,
         });
     } catch (error) {
         console.error(error.message);
@@ -43,4 +46,32 @@
     res.status(201).json({
         Key: process.env.RAZORPAY_API_KEY,
     });
+    }
+
+    export async function paymentVerification(req, res) {
+    try {
+        const {
+        razorpay_payment_id,
+        razorpay_order_id,
+        razorpay_signature,
+        } = req.body;
+        const body = razorpay_order_id + "|" + razorpay_payment_id;
+        const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
+        .update(body.toString())
+        .digest("hex");
+        if (expectedSignature !== razorpay_signature) {
+        return res.status(400).json({
+            success: false,
+            message: "Payment Verification failed",
+        });
+        } else {
+        return res.redirect(
+            `http://localhost:5173/paymentSuccess?reference=${razorpay_payment_id}`
+        );
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.json({message: error.message})
+    }
     }
