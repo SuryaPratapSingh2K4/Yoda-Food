@@ -10,6 +10,7 @@ import Modal from './pages/Modal.jsx';
 import { ListOrderedIcon, ShoppingCartIcon } from 'lucide-react';
 import Cart from './pages/Cart.jsx';
 import Delivery from './pages/DeliveryItem.jsx';
+import PaymentSuccess from './pages/PaymentSuccess.jsx';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
           <Route path='/modal/:id' element={token ? <Modal /> : <Navigate to='/' />} />
           <Route path='/cart' element={token ? <Cart /> : <Navigate to='/' />} />
           <Route path='/delivery/:id' element={token ? <Delivery /> : <Navigate to='/' />} />
+          <Route path='/paymentSuccess' element={<PaymentSuccess />} />
         </Routes>
       </div>
     </Router>

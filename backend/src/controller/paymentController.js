@@ -3,8 +3,6 @@
     import Order from "../model/orderSchema.js";
     import { instance } from "../server.js";
     import crypto from "crypto";
-    import dotenv from "dotenv";
-    dotenv.config();
 
     export async function processPayment(req, res) {
     try {
@@ -50,11 +48,8 @@
 
     export async function paymentVerification(req, res) {
     try {
-        const {
-        razorpay_payment_id,
-        razorpay_order_id,
-        razorpay_signature,
-        } = req.body;
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+        req.body;
         const body = razorpay_order_id + "|" + razorpay_payment_id;
         const expectedSignature = crypto
         .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
@@ -66,12 +61,13 @@
             message: "Payment Verification failed",
         });
         } else {
-        return res.redirect(
-            `http://localhost:5173/paymentSuccess?reference=${razorpay_payment_id}`
-        );
+        return res.status(200).json({
+            success: true,
+            reference: razorpay_payment_id,
+        });
         }
     } catch (error) {
         console.error(error.message);
-        res.json({message: error.message})
+        res.json({ message: error.message });
     }
     }
