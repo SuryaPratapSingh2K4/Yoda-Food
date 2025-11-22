@@ -71,3 +71,20 @@
         res.json({ message: error.message });
     }
     }
+    export async function MyOrders(req, res) {
+    try {
+        const orders = await Order.find({ user: req.params.id })
+        .populate({
+            path: "items.productId",
+            select: "title price imageUrl image fileURL",
+        })
+        .sort({ createdAt: -1 });
+
+        console.log("Orders Response :", orders);
+
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: error.message });
+    }
+    }
