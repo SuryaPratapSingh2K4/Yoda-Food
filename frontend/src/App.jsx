@@ -11,6 +11,7 @@ import { ListOrderedIcon, ShoppingCartIcon } from 'lucide-react';
 import Cart from './pages/Cart.jsx';
 import Delivery from './pages/DeliveryItem.jsx';
 import PaymentSuccess from './pages/PaymentSuccess.jsx';
+import MyOrders from './pages/MyOrders.jsx';
 function App() {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function App() {
           <NavLink to='/dashboard' className='hover:scale-105 hover:font-bold'>Products</NavLink>
           <NavLink to='/add' className='hover:scale-105 hover:font-bold'>Add Products</NavLink>
           <NavLink to='/cart' className='hover:scale-105 hover:font-bold'><ShoppingCartIcon /></NavLink>
-          <NavLink to='/mydelivery' className='hover:scale-105 hover:font-bold'><ListOrderedIcon /></NavLink>
+          <NavLink to='/myorders' className='hover:scale-105 hover:font-bold'><ListOrderedIcon /></NavLink>
           <NavLink onClick={() => dispatch(logout())} className='hover:scale-105 hover:font-bold'>Logout</NavLink>
 
         </div> : <>
@@ -41,6 +42,7 @@ function App() {
           <Route path='/cart' element={token ? <Cart /> : <Navigate to='/' />} />
           <Route path='/delivery/:id' element={token ? <Delivery /> : <Navigate to='/' />} />
           <Route path='/paymentSuccess' element={<PaymentSuccess />} />
+          <Route path='/myorders' element={token ? <MyOrders /> : <Navigate to='/' />} />
         </Routes>
       </div>
     </Router>

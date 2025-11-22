@@ -1,8 +1,13 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function PaymentSuccess() {
     const query = new URLSearchParams(window.location.search);
     const reference = query.get('reference');
+    const navigate = useNavigate();
+    const handleOrder = () => {
+        navigate('/myorders');
+    }
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="bg-white shadow-lg p-8 rounded-xl text-center max-w-md">
@@ -23,12 +28,12 @@ function PaymentSuccess() {
                     {reference}
                 </p>
 
-                <a
-                    href="/"
+                <button
+                onClick={() => handleOrder()}
                     className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                 >
-                    Go Back Home
-                </a>
+                    Go My Order
+                </button>
             </div>
         </div>
     )
